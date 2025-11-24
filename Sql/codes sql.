@@ -1,0 +1,63 @@
+SELECT
+  *
+FROM
+  "MOTORS"."PUBLIC"."CARSALESINFORMATION"
+LIMIT
+  10;
+
+---1. Top 5 Revenue-Generating Makes & Models
+
+SELECT
+  MAKE,
+  MODEL,
+  SUM(SELLINGPRICE) AS total_revenue,
+  COUNT(*) AS units_sold,
+  AVG(SELLINGPRICE) AS avg_price
+FROM "MOTORS"."PUBLIC"."CARSALESINFORMATION"
+GROUP BY MAKE, MODEL
+ORDER BY total_revenue DESC
+LIMIT 5;
+
+---2. Top 5 Locations / States by Sales Volume
+SELECT
+  STATE,
+  COUNT(*) AS units_sold,
+  SUM(SELLINGPRICE) AS total_revenue,
+  AVG(SELLINGPRICE) AS avg_price
+FROM "MOTORS"."PUBLIC"."CARSALESINFORMATION"
+GROUP BY STATE
+ORDER BY units_sold DESC
+LIMIT 5;
+
+---3. Top 5 Most Popular Body Types
+SELECT
+  BODY,
+  COUNT(*) AS units_sold,
+  AVG(SELLINGPRICE) AS avg_price
+FROM "MOTORS"."PUBLIC"."CARSALESINFORMATION"
+GROUP BY BODY
+ORDER BY units_sold DESC
+LIMIT 5;
+
+---4. Top 5 Sellers / Dealerships by Revenue
+SELECT
+  SELLER,
+  COUNT(*) AS units_sold,
+  SUM(SELLINGPRICE) AS total_revenue,
+  AVG(SELLINGPRICE) AS avg_price
+FROM "MOTORS"."PUBLIC"."CARSALESINFORMATION"
+GROUP BY SELLER
+ORDER BY total_revenue DESC
+LIMIT 5;
+
+---5. Top 5 Vehicles by Price vs Market Rate (Overpriced/Underpriced Insights)
+SELECT
+  MAKE,
+  MODEL,
+  AVG(MMR) AS avg_market_rate,
+  AVG(SELLINGPRICE) AS avg_sell_price,
+  AVG(SELLINGPRICE - MMR) AS avg_price_diff
+FROM "MOTORS"."PUBLIC"."CARSALESINFORMATION"
+GROUP BY MAKE, MODEL
+ORDER BY avg_price_diff DESC
+LIMIT 5;
